@@ -89,4 +89,4 @@ Om de server te starten geef je volgend commando in
 npm start
 ```
 
-Et voila op  &lt;jou.rpi.ip.addr &lt;:3000 zie je de indexpagina van Flapper news
+Et voila op  &lt;jou.rpi.ip.addr&gt;:3000 zie je de indexpagina van Flapper news
