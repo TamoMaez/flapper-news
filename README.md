@@ -4,7 +4,7 @@ Ik heb een [tutorial over Mean](https://thinkster.io/mean-stack-tutorial/) gevol
 
 De front- en backend zijn heel basic maar wel een andere manier als we gewend zijn en zeker interessant om te overwegen voor komende projecten.
 
-De authenticatie bijvoorbeeld is op basis van een token die dan als cookie wordt opgeslagen in de localstorage. Om Rest PUT & POST routes te gebruiken heb je dus een token nodig, deze kan je ophalen via de login. Probeer 
+De authenticatie bijvoorbeeld is op basis van een token (Passport) die dan als cookie wordt opgeslagen in de localstorage. Om Rest PUT & POST routes te gebruiken heb je dus een token nodig, deze kan je ophalen via de login. Probeer 
 ```
 curl --data "username=test&password=test" 81.164.88.90:3000/login 
 ```
