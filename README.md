@@ -10,7 +10,7 @@ curl --data "username=test&password=test" 81.164.88.90:3000/login
 ```
 en je zou een token als antwoord moeten krijgen.
 
-Een live versie staat op poort 3000 van her pi [link](http://81.164.88.90:3000)
+Een live versie staat op poort 3000 van Herrn pi [link](http://81.164.88.90:3000)
 
 # Fork
 
