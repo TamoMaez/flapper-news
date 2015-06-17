@@ -2,7 +2,7 @@
 
 Ik heb een [tutorial over Mean](https://thinkster.io/mean-stack-tutorial/) gevolgd, deze tutorial maakt gebruik van AngularJS, MongoDb, NodeJS en Express.js (npm, bower, ...) en kunnen we als test gebruiken om te prutsen.
 
-Een live versie staat op poort 3000 op van mijn pi [link](81.164.88.90:3000)
+Een live versie staat op poort 3000 op van mijn pi [link](https://81.164.88.90:3000)
 
 # Fork
 
