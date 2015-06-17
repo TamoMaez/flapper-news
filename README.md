@@ -81,7 +81,7 @@ Laat mongo maar draaien want het is tijd voor het eigelijke project
 
 ### Clone project
 
-Je hebt natturlijk het project nodig
+Je hebt natuurlijk het project nodig
 ```
 git clone https://github.com/TamoMaez/flapper-news.git
 ```
