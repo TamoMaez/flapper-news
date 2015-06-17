@@ -8,7 +8,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		controller: 'MainCtrl',
 		resolve: {
 			postPromise: ['posts', function(posts){
-				console.log(1,posts)
 				return posts.getAll();
 			}]
 		}
@@ -45,14 +44,14 @@ app.factory('posts', ['$http', function($http){
 	};
 	
 	o.create = function(post) {
-		return $http.post('/posts', post).succes(function(data){
+		return $http.post('/posts', post).success(function(data){
 			o.posts.push(data);
 		})
 	}
 	
 	o.upvote = function(post){
 		return $http.put('/posts/' + post._id + '/upvote')
-			.succes(function(data){
+			.success(function(data){
 				post.upvotes ++;
 		})
 	}
@@ -60,6 +59,13 @@ app.factory('posts', ['$http', function($http){
 	o.addComment = function(id, comment) {
 	  return $http.post('/posts/' + id + '/comments', comment);
 	};
+	
+	o.upvoteComment = function(post, comment){
+		return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvote')
+			.success(function(data){
+				comment.upvotes ++;
+			})
+	}
 	
 	return o;
 }])
@@ -77,7 +83,7 @@ app.controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
   }
   
   $scope.upvote = function(post){
-	  post.upvote(post);
+	  posts.upvote(post);
   }
 }]);
 
@@ -94,4 +100,8 @@ app.controller('PostsCtrl', ['$scope', '$stateParams', 'posts', 'post', function
 		  });
 		  $scope.body = '';
 	};
+	
+	$scope.upvote = function(comment){
+		posts.upvoteComment(post, comment);
+	}
 }]);
