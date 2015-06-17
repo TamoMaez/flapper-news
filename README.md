@@ -1,62 +1,93 @@
 # flapper-news 
 
+Ik heb een [tutorial over Mean](https://thinkster.io/mean-stack-tutorial/) gevolgd, namelijk 
+Deze tutorial maakt gebruik van AngularJS, MongoDb, NodeJS en Express.js (npm, bower, ...) en kunnen we als test gebruiken om te prutsen.
 
+Een live versie staat op poort 3000 op van mijn pi [link](81.164.88.90:3000)
 
-# Angular Material-Start
+# Fork
 
-This Material **start*** project is a *seed* for AngularJS Material applications. The project contains a sample AngularJS application and is pre-configured to install the Angular framework and a bunch of development and testing tools for instant web development gratification.
+Het project is opgebouwd zodat iedereen er makkelijk aan kan bijdragen dus hieronder een paar stapkes om het op uwe pi draaiende te krijgen maar bovenal op je pc om mee te proggen! 
 
-This sample application is intended to be useful as both a learning tool and a skeleton application
-for a typical [AngularJS Material](http://material.angularjs.org/) web app: comprised of a Side navigation
-area and a content area. You can use it to quickly bootstrap your AngularJS webapp projects and dev
-environment for these projects.
+## Getting started
 
-### What is the UX?
+### NodeJS
 
-Below is a snapshot of the Starter-App with the Users' *master-detail* view. Also shown is the user
-experience that will is displayed for smaller device sizes. The responsive layout changes to hide
-the user list, reveal the **menu** button. In the User Details view, you may also click the
-**share** button  to show the Contact &lt;User&gt; bottom sheet view.
+Eerst een update en een ARM-versie van NodeJS
+```
+sudo apt-get update
+sudo apt-get upgrade
+wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
+sudo dpkg -i node_latest_armhf.deb
+```
 
-<br/>
+Je kan de installatie checken met 
+```
+node -v
+```
 
-![material-starter-ux2](https://cloud.githubusercontent.com/assets/210413/6448551/70864488-c0e0-11e4-8767-c4e1e4c2f343.png)
+### MongoDB
 
-<br/>
+Wat libs die we nodig hebben en git clone van ongecompileerde mongo
+```
+sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git
+cd ~
+git clone https://github.com/skrabban/mongo-nonx86
+```
 
-This Starter app demonstrates how:
+Houd u vast, het commando hieronder duurde bij mij bijna een uur
+```
+cd mongo-nonx86
+sudo scons
+```
 
-*  Angular Material `layout` and `flex` options can easily configure HTML containers
-*  Angular Material components `<md-toolbar>`, `<md-sidenav>`, `<md-icon>` can be quickly used
-*  Custom controllers can use and show `<md-bottomsheet>` with HTML templates
-*  Custom controller can easily, programmatically open & close the SideNav component.
-*  Responsive breakpoints and `$mdMedia` are used
-*  Theming can be altered/configured using `$mdThemingProvider`
-*  ARIA features are supported by Angular Material and warnings can be used to improve accessibility.
+Ook bij deze kan je beter even gaan wandelen
+```
+sudo scons --prefix=/opt/mongo install
+```
 
-### Tutorials
+We zijn er bijna, nog een paar permissies, mappen aanmaken en path in orde zetten
+```
+sudo adduser --firstuid 100 --ingroup nogroup --shell /etc/false --disabled-password --gecos "" --no-create-home mongodb
+sudo mkdir /var/log/mongodb/
+sudo chown mongodb:nogroup /var/log/mongodb/
+sudo mkdir /var/lib/mongodb
+sudo chown mongodb:nogroup /var/lib/mongodb
+sudo cp debian/init.d /etc/init.d/mongod
+sudo cp debian/mongodb.conf /etc/
+sudo ln -s /opt/mongo/bin/mongod /usr/bin/mongod
+sudo chmod u+x /etc/init.d/mongod
+sudo update-rc.d mongod defaults
+```
 
-The repository contains both ES5 and ES6 versions of the application. Traditional development with
-ES5 standards and solutions are presented here by default. Tutorials are included: step-by-step
-instructions that clearly demonstrate how the Starter application can be created in minutes.
+Het grote moment is aangebroken
+```
+sudo /etc/init.d/mongod start
+```
 
-> These tutorials will be presented live, on-stage at **ng-conf 2015, Utah**.
+Testen
+```
+mongo
+```
 
-Developers should checkout the following repository branches for:
+Laat mongo maar draaien want het is tijd voor het eigelijke project
 
-* Branch [**Starter - ES5 Tutorials**](https://github.com/angular/material-start/tree/es5-tutorial):
-for  ES5 Tutorial steps & development process.
-* Branch [**Starter - ES6 Tutorials**](https://github.com/angular/material-start/tree/es6-tutorial):
-for  ES6 Tutorial steps & development process.
-* Branch [**Starter - ES6**](https://github.com/angular/material-start/tree/es6): for example
-implementation of Angular Material 1.x (and Angular 1.x) within an ES6 application.
+### Clone project
 
-> The **README** for the ES6 branches will provide all details showing how easy, <u>more simplifed</u>,
-and <u>more manageable</u> it is to develop ES6 applications with Angular Material 1.x.<br/><br/>
+Je hebt natturlijk het project nodig
+```
+git clone https://github.com/TamoMaez/flapper-news.git
+```
 
-## Getting Started
+Nu gaan we aan Node zeggen dat hij alle dependencies moet installeren die bij het project horen
+```
+cd flapper-news/ 
+npm install
+```
 
-#### Prerequisites
+Om de server te starten geef je volgend commando in
+```
+npm start
+```
 
-You will need **git** to clone the material-start repository. You can get git from
-[http://git-scm.com/](http://git-scm.com/).
+Et voila op <jou_rpi_ip_addr>:3000 zie je de indexpagina van Flapper news
