@@ -98,3 +98,7 @@ npm start
 ```
 
 Et voila op  &lt;jou.rpi.ip.addr&gt;:3000 zie je de indexpagina van Flapper news
+
+## PC/Laptop
+
+Op je laptop gewoon naar de MongoDB website gaan en installeren. Je hebt ook python nodig maar dat staat misschien standaard op Mac
