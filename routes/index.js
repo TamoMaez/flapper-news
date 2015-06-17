@@ -123,5 +123,3 @@ router.param('comment', function(req, res, next, id) {
 		return next();
 		});
 });
-
-
