@@ -150,9 +150,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	  if(!$scope.title || $scope.title === "") return;
 	  posts.create({
 		  title: $scope.title, 
-		  link: $scope.link
+		  link: $scope.link,
+		  author: 'user'
 	  });
-	  $scope.title = $scope.title = "";
+	  $scope.title = "";
+	  $scope.link = "";
   }
   
   $scope.upvote = function(post){
