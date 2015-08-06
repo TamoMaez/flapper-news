@@ -7,7 +7,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		templateUrl: '/home.html',
 		controller: 'MainCtrl',
 		resolve: {
-			postPromise: ['posts', function(posts){
+			postPromise: ['posts', 'git', function(posts, git){
 				return posts.getAll();
 			}]
 		}
@@ -19,6 +19,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	  resolve: {
 		  post: ['$stateParams', 'posts', function($stateParams, posts){
 			  return posts.get($stateParams.id);
+			}]
+		}
+	})
+	.state('commits', {
+	  url: '/commits',
+	  templateUrl: '/commits.html',
+	  controller: 'CommitCtrl',
+	  resolve: {
+		  postPromise: ['git', function(git){
+			  return git.get();;
 			}]
 		}
 	})
@@ -42,7 +52,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		}
 	  }]
 	});
-	
+	console.log($stateProvider);
 	$urlRouterProvider.otherwise('home');
 }])
 
@@ -99,6 +109,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	
 	o.get = function(id) {
 		return $http.get('/posts/' + id).then(function(res){
+			console.log(res.data);
 			return res.data;
 		});
 	}
@@ -106,6 +117,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	o.getAll = function() {
 		return $http.get('/posts').success(function(data){
 		  angular.copy(data, o.posts);
+		  console.log(data);
 		});
 	};
 	
@@ -113,6 +125,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		return $http.post('/posts', post, {
 			headers: {Authorization : 'Bearer ' + auth.getToken()}
 		}).success(function(data){
+			data.author = auth.currentUser;
 			o.posts.push(data);
 		})
 	}
@@ -142,6 +155,21 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	return o;
 }])
 
+.factory('git', ['$http', function($http){
+	var repo = {};
+	
+	repo.get = function() {
+		return $http.get("https://api.github.com/repos/TamoMaez/flapper-news").then(function(res){
+			angular.copy(res.data, repo);
+			return $http.get("https://api.github.com/repositories/" + repo.id + "/commits").then(function(result){
+				repo.commits = result.data;
+			});
+		});
+	}
+	
+	return repo;
+}])
+
 .controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, auth){
   $scope.posts = posts.posts;
   $scope.isLoggedIn = auth.isLoggedIn;
@@ -151,7 +179,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	  posts.create({
 		  title: $scope.title, 
 		  link: $scope.link,
-		  author: 'user'
+		  description: $scope.description,
+		  author: "user"
 	  });
 	  $scope.title = "";
 	  $scope.link = "";
@@ -200,6 +229,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			$state.go('home');
 		});
 	};
+}])
+
+.controller('CommitCtrl', ['$scope', 'git', function($scope, git){
+	  $scope.repo = git;	  
 }])
 
 .controller('NavCtrl', ['$scope', 'auth', function($scope, auth){

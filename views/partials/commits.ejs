@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="/commits.html">
+<div class="page-header">
+<h3>Commits</h3>
+</div>
+<div ng-repeat="commitObj in repo.commits">
+	<span ng-show="commitObj.commit.author.name">
+		By <a>{{commitObj.commit.author.name}}</a> |
+	</span>
+	<span style=" margin-left:10px;">
+		<a ng-show="commitObj.commit.message" href="{{commitObj.commit.url}}">
+			{{commitObj.commit.message}} {{commitObj.commit.author.date | date:'dd-MM-yyyy HH:mm'}}
+		</a>
+	</span>
+</div>
+</script>

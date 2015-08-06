@@ -12,6 +12,7 @@ var passport = require('passport');
 require('./models/Posts');
 require('./models/Comments');
 require('./models/Users');
+require('./models/Tag');
 
 require('./config/passport');
 
@@ -36,6 +37,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
+app.use(passport.session()); 
 
 app.use('/', routes);
 app.use('/users', users);

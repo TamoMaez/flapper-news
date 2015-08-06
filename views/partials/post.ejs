@@ -5,7 +5,7 @@
 {{post.title}}
 </a>
 <span ng-hide="post.link">
-{{post.title}}
+{{post.title}} by {{post.author.username}}
 </span>
 </h3>
 </div>
@@ -13,7 +13,7 @@
 <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
 <span class="glyphicon glyphicon-thumbs-up"
 ng-click="upvote(comment)"></span>
-{{comment.upvotes}} - by {{comment.author}}
+{{comment.upvotes}} - by {{comment.author.username}}
 <span style="font-size:20px; margin-left:10px;">
 {{comment.body}}
 </span>
